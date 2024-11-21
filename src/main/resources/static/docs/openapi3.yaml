@@ -47,7 +47,7 @@ paths:
                     "content" : "코드 한 줄에 커피 한 잔, 우리는 카페인으로 움직이는 팀입니다!",
                     "coworkers" : [ {
                       "userId" : 2,
-                      "roleName" : "Mate"
+                      "roleName" : "MATE"
                     } ]
                   }
       responses:
