@@ -1,5 +1,7 @@
 package com.growup.pms.team.controller;
 
+import static com.growup.pms.common.constant.RegexConstants.TEAM_NAME_PATTERN;
+
 import com.growup.pms.auth.controller.dto.SecurityUser;
 import com.growup.pms.common.aop.annotation.CurrentUser;
 import com.growup.pms.common.aop.annotation.RequirePermission;
@@ -7,9 +9,12 @@ import com.growup.pms.common.aop.annotation.TeamId;
 import com.growup.pms.role.domain.PermissionType;
 import com.growup.pms.team.controller.dto.request.TeamCreateRequest;
 import com.growup.pms.team.controller.dto.request.TeamUpdateRequest;
+import com.growup.pms.team.controller.dto.response.TeamNameCheckResponse;
 import com.growup.pms.team.controller.dto.response.TeamResponse;
 import com.growup.pms.team.service.TeamService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +64,12 @@ public class TeamControllerV1 {
     public ResponseEntity<Void> leaveTeam(@CurrentUser SecurityUser user, @Positive @PathVariable Long teamId) {
         teamService.leaveTeam(teamId, user.getId());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<TeamNameCheckResponse> isTeamNameAvailable(
+            @Valid @NotNull @Pattern(regexp = TEAM_NAME_PATTERN) String teamName
+    ) {
+        return ResponseEntity.ok().body(teamService.isTeamNameAvailable(teamName));
     }
 }
